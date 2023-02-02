@@ -21,11 +21,14 @@ services:
       - DB_PASS=changeme
     depends_on:
       - db
+    links:
+      - db
 
   db:
     image: postgres:15-alpine
     volumes:
       - dev-db-data:/var/lib/postgresql/data
+    hostname: db
     environment:
       - POSTGRES_DB=devdb
       - POSTGRES_USER=devuser
