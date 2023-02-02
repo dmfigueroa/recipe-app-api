@@ -82,7 +82,7 @@ DATABASES = {
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASS'),
         'TEST': {
-            'NAME': os.environ.get('DB_NAME')
+            'NAME': os.environ.get('DB_TEST_NAME')
         }
     }
 }
