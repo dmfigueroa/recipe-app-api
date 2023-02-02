@@ -3,11 +3,10 @@ Tests for the Django admin modifications
 """
 
 from django.test import TestCase
-from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.test import Client
 
-from core.models import UserManager
+from core.utils import get_user_model
 
 
 class AdminSiteTests(TestCase):
@@ -15,14 +14,13 @@ class AdminSiteTests(TestCase):
 
     def setUp(self):
         self.client = Client()
-        manager: UserManager = get_user_model().objects  # type: ignore
-        self.admin_user = manager.create_superuser(
+        self.admin_user = get_user_model().objects.create_superuser(
             email="admin@example.com",
             password="password123",
         )
 
         self.client.force_login(self.admin_user)
-        self.user = manager.create_user(
+        self.user = get_user_model().objects.create_user(
             email="user@example.com",
             password="password123",
             name="Test User",

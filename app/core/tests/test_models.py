@@ -3,9 +3,8 @@ Tests for models
 """
 
 from django.test import TestCase
-from django.contrib.auth import get_user_model
 
-from core.models import UserManager
+from core.utils import get_user_model
 
 
 class ModelTests(TestCase):
@@ -16,8 +15,7 @@ class ModelTests(TestCase):
 
         email = 'test@example.com'
         password = 'testpass123'
-        manager: UserManager = get_user_model().objects  # type: ignore
-        user = manager.create_user(
+        user = get_user_model().objects.create_user(
             email=email,
             password=password
         )
@@ -36,8 +34,7 @@ class ModelTests(TestCase):
         ]
 
         for email, expected in sample_emails:
-            manager: UserManager = get_user_model().objects  # type: ignore
-            user = manager.create_user(
+            user = get_user_model().objects.create_user(
                 email=email,
                 password='testpass123'
             )
@@ -48,14 +45,12 @@ class ModelTests(TestCase):
         """Test that creating a user without an email raises ValueError"""
 
         with self.assertRaises(ValueError):
-            manager: UserManager = get_user_model().objects  # type: ignore
-            manager.create_user('', 'testpass123')
+            get_user_model().objects.create_user('', 'testpass123')
 
     def test_create_superuser(self):
         """Test creating a new superuser"""
 
-        manager: UserManager = get_user_model().objects  # type: ignore
-        user = manager.create_superuser(
+        user = get_user_model().objects.create_superuser(
             email='test@example.com',
             password='test123'
         )
