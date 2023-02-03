@@ -2,11 +2,13 @@
 Serializers for the user API view
 """
 
+from typing import Optional
 from django.contrib.auth import authenticate
 from django.utils.translation import gettext as _
 from rest_framework import serializers
 
 from core.utils import get_user_model
+from core.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -21,6 +23,19 @@ class UserSerializer(serializers.ModelSerializer):
         """Create and return a user with encrypted password"""
 
         return get_user_model().objects.create_user(**validated_data)
+
+    def update(self, instance: User, validated_data):
+        """Update a user, setting the password correctly and return it"""
+
+        password: Optional[str] = validated_data.pop('password', None)
+
+        user = super().update(instance, validated_data)
+
+        if password:
+            user.set_password(password)
+            user.save()
+
+        return user
 
 
 class AuthTokenSerializer(serializers.Serializer):
