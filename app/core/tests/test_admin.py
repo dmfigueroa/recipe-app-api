@@ -40,8 +40,7 @@ class AdminSiteTests(TestCase):
 
         url = reverse(
             'admin:core_user_change',
-            args=[self.user.id]  # type: ignore
-
+            args=[self.user.pk]
         )
         res = self.client.get(url)
 
